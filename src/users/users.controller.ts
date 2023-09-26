@@ -1,4 +1,12 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { InsertUserDto } from './dto';
 
@@ -6,9 +14,30 @@ import { InsertUserDto } from './dto';
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
+  @Get(':id')
+  async getUserById(@Param('id', ParseUUIDPipe) id: string) {
+    try {
+      return this.usersService.getUserById(id);
+    } catch (err) {
+      return err;
+    }
+  }
+
   @Post()
-  insertUser(@Body() dto: InsertUserDto) {
-    console.log({ dto });
-    return this.usersService.insertUserResponse();
+  async insertUser(@Body() dto: InsertUserDto) {
+    try {
+      return this.usersService.insertUser(dto);
+    } catch (err) {
+      return err;
+    }
+  }
+
+  @Delete(':id')
+  async deleteUser(@Param('id', ParseUUIDPipe) id: string) {
+    try {
+      return this.usersService.removeUserById(id);
+    } catch (err) {
+      return err;
+    }
   }
 }
