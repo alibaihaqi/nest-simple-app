@@ -14,6 +14,23 @@ export class InsertUserDto {
   password: string;
 }
 
+export class IUpdateUserDto {
+  @IsString()
+  @IsNotEmpty()
+  id?: string;
+
+  @IsString()
+  name?: string;
+
+  password?: string;
+
+  @IsString()
+  currentPassword?: string;
+
+  @IsString()
+  newPassword?: string;
+}
+
 export interface IUser {
   id?: string;
   name: string;
