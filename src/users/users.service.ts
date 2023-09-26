@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import * as argon from 'argon2';
 
 import { PrismaService } from '../prisma/prisma.service';
-import { InsertUserDto, IDeleteUser, IUser } from './dto';
+import { InsertUserDto, IDeleteUser, IUser, IUpdateUserDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 @Injectable({})
@@ -53,6 +53,50 @@ export class UsersService {
       }
       throw error;
     }
+  }
+
+  async updateUser(updateUserDto: IUpdateUserDto) {
+    const updateData: IUpdateUserDto = {};
+    if (updateUserDto.name) {
+      updateData.name = updateUserDto.name;
+    }
+
+    if (updateUserDto.currentPassword && updateUserDto.newPassword) {
+      const user = await this.prisma.user.findFirst({
+        where: {
+          id: updateUserDto.id,
+        },
+        select: {
+          password: true,
+        },
+      });
+
+      const isValid = await argon.verify(
+        user.password,
+        updateUserDto.currentPassword,
+      );
+
+      if (!isValid) {
+        throw new ForbiddenException('Current password is not match');
+      }
+
+      updateData.password = await argon.hash(updateUserDto.newPassword);
+    }
+
+    const updatedUser = await this.prisma.user.update({
+      where: {
+        id: updateUserDto.id,
+      },
+      data: updateData,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: true, // Better don't expose the password
+      },
+    });
+
+    return updatedUser;
   }
 
   async removeUserById(id: string): Promise<IDeleteUser> {
