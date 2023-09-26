@@ -276,3 +276,7 @@ Implementation with `NestJS` + `Prisma` are much easier to do, and it really gre
 - `prisma` only contains 2 files, `module` and `service`, where:
    - `module` has similar functionality with feature, and it uses `@Global` decorator, so it can be used in `Global` state.
    - `service` has functionality extends from `Prisma Client`
+- We use `class-validator` package who's already integrated with `Nest JS` to support input validation when you send the request. One of the implementation is `src/users/dto/user.dto.ts`
+   - `@IsString`: the input must be `string`,
+   - `@IsNotEmpty`: the input mustn't be `empty` or `null`,
+   - `@IsEmail`: the input must pass `email` validation,
