@@ -4,10 +4,14 @@ import * as argon from 'argon2';
 import { PrismaService } from '../prisma/prisma.service';
 import { InsertUserDto, IDeleteUser, IUser, IUpdateUserDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable({})
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwt: JwtService,
+  ) {}
 
   async getUserById(id: string): Promise<IUser> {
     return this.prisma.user.findFirst({
