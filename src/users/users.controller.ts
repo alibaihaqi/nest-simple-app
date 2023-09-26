@@ -25,11 +25,7 @@ export class UsersController {
 
   @Post()
   async insertUser(@Body() dto: InsertUserDto) {
-    try {
-      return this.usersService.insertUser(dto);
-    } catch (err) {
-      return err;
-    }
+    return this.usersService.insertUser(dto);
   }
 
   @Delete(':id')
