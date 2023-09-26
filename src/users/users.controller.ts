@@ -6,9 +6,10 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { InsertUserDto } from './dto';
+import { InsertUserDto, IUpdateUserDto } from './dto';
 
 @Controller('users')
 export class UsersController {
@@ -26,6 +27,11 @@ export class UsersController {
   @Post()
   async insertUser(@Body() dto: InsertUserDto) {
     return this.usersService.insertUser(dto);
+  }
+
+  @Put()
+  async updateUser(@Body() dto: IUpdateUserDto) {
+    return this.usersService.updateUser(dto);
   }
 
   @Delete(':id')
