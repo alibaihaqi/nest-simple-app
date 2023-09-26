@@ -280,3 +280,4 @@ Implementation with `NestJS` + `Prisma` are much easier to do, and it really gre
    - `@IsString`: the input must be `string`,
    - `@IsNotEmpty`: the input mustn't be `empty` or `null`,
    - `@IsEmail`: the input must pass `email` validation,
+- For the `protected API routes`, it combined with `passport`, `passport-jwt`, `@nestjs/jwt`, `@nestjs/passport`, and then we combine it with `UseGuards` on `NestJS` functionality.
